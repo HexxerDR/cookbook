@@ -1,0 +1,69 @@
+{% extends 'recipes/base.html' %}
+    {% block content %}
+    <h1> Recipe # {{object.id}}</h1>
+    <div>
+        <div>
+          <h5 >{{ object.title}} | Recipe Price: ${{ object.price_total }} </h5>
+          <p>{{ object.author}} | {{ object.updated_at|date:"d F, Y" }}</p>
+          <p>{{ object.description }} </p>
+        </div>
+        <h1>Ingredients </h1>
+          <div>
+            {% for values in object.ingredients_list.values %}
+              {{ values|linebreaks  }}
+            {% endfor %}
+          </div>
+          <div>
+            <a class="btn btn-outline-info" href="{% url 'recipes-ingredient' object.id %}"> Add Ingredient </a>
+            {% if object.ingredients_list.values %}
+              <a class="btn btn-outline-info" href="{% url 'recipes-ingredientremove' object.id %}"> Delete Ingredient </a>
+            {% endif %}
+        </br></br></br>
+      </div>
+    </br></br></br></br></br>
+      {% if object.author == user  %}
+      <div class="col-4">
+        <a class="btn btn-outline-info" href="{% url 'recipes-update' object.id %}">Update</a>
+        <a class="btn btn-outline-danger" href="{% url 'recipes-delete' object.id %}">Delete</a>
+      </div>
+      {% elif user.is_staff %}
+      <div class="col-4">
+        <a class="btn btn-outline-danger" href="{% url 'recipes-delete' object.id %}">Delete</a>
+      </div>
+      {% endif %}
+      <div>
+        <p>{{ object.rating_total }} </p>
+        <div class="col-4"> 
+          <a class="btn btn-outline-info" href="{% url 'recipes-like' object.id %}"> Like </a>
+        </div>
+      </div>
+    </br></br></br></br></br></br></br></br>
+    <h1>Comments </h1> <a class="btn btn-outline-info" href="{% url 'comments-create' recipe.pk %}"> Add a comment </a> 
+  </br></br>
+    {% if not recipe.comments.all %}
+        No comments...
+    {% else %}
+      {% for comment in recipe.comments.all %}
+      <hr>
+    </br>
+        <strong> {{ comment.author}} </strong> | {{ comment.created_at|date:"d F, Y" }}
+      </br>
+        {{ comment.description }}
+        {% if comment.author == user %}
+        <div class="col-4">
+          <a class="btn btn-outline-info" href=" {% url 'comments-update' recipe.id comment.id %}">Update</a>
+          <a class="btn btn-outline-danger" href="{% url 'comments-delete' recipe.id comment.id %}">Delete</a>
+        </div>
+        {% elif user.is_staff %}
+        <div class="col-4">
+          <a class="btn btn-outline-danger" href="{% url 'comments-delete' recipe.id comment.id %}">Delete</a>
+        </div>
+        {% endif %}
+      </br>  
+    </br>
+      <hr>
+      </br>
+      {% endfor %}
+    
+    {% endif %}
+    {% endblock content %}
