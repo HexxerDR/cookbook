@@ -6,6 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
+        ("ingredients", "0001_initial"),
         ("recipes", "0004_recipe_ingredients_alter_recipe_description"),
     ]
 
