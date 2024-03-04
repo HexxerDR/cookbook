@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'users',
     'comments',
     'ratings',
+    'ingredients',
 
     'crispy_forms',
     "crispy_bootstrap4",
